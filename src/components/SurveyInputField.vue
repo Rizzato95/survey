@@ -12,7 +12,7 @@
           :name="'input-' + id"
           v-model="internalValue"
           v-money="vMoneyRule"
-          type="text"
+          :type="type"
           :state="getValidationState(validationContext)"
           :aria-describedby="'input-live-feedback' + id"
           @input="onChange"
@@ -34,14 +34,16 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import SurveyBaseField from './SurveyBaseField.vue';
 
 /** Import vue mask directive */
+// @ts-ignore
 import { VueMaskDirective } from 'v-mask';
 Vue.directive('mask', VueMaskDirective);
 
+// @ts-ignore
 import { VMoney } from 'v-money';
 Vue.directive('money', VMoney);
 
 @Component
-export default class SurveyInputField extends SurveyBaseField {
+export default class SurveyMoneyField extends SurveyBaseField {
   /** The validation context */
   @Prop({ default: 'text' }) private type!: string;
   /** The rules separeted by pipe (|) */

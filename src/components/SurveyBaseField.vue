@@ -10,7 +10,7 @@ export default class SurveyBaseField extends Vue {
   /** The validation context */
   @Prop({ required: true }) private value!: string | number | Date;
   /** The rules separeted by pipe (|) or the rules object */
-  @Prop() private rules!: any;
+  @Prop() private rules!: object | string;
 
   /** The internal value for manage v-model correctly */
   protected internalValue: string | number | Date | null = this.value ?? '';
@@ -18,6 +18,7 @@ export default class SurveyBaseField extends Vue {
   /**
    * Validation state method
    */
+  // @ts-ignore
   protected getValidationState({ dirty, validated, valid = null }): boolean | null {
     return dirty || validated ? valid : null;
   }

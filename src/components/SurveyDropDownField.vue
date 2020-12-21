@@ -61,6 +61,7 @@ export default class SurveyDropDownField extends SurveyBaseField {
   /**
    * Validation state method
    */
+  // @ts-ignore
   protected getValidationState({ dirty, validated, valid = null }): boolean | null {
     if ((dirty || validated)) {
       if (this.otherOptionValue == this.internalValue && !this.otherValue)
