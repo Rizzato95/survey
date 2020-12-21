@@ -1,0 +1,13 @@
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1400px
+);
+// $input-border-radius: 0;
+// $input-padding-y: 1rem;
+
+// Bootstrap and its default variables
+@import 'node_modules/bootstrap/scss/bootstrap';
+// BootstrapVue and its default variables
+@import 'node_modules/bootstrap-vue/src/index.scss';
