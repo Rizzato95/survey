@@ -51,7 +51,7 @@ export default class SurveyDropDownField extends SurveyBaseField {
 
   private otherValue = null;
 
-  private options: any = [
+  private options: object = [
     { value: undefined, text: 'Please select an option' },
     { value: 'a', text: 'This is First option' },
     { value: 'b', text: 'This is Second option' },
