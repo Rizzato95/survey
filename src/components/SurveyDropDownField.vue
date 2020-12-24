@@ -1,40 +1,38 @@
 <template>
   <validation-provider :name="label" :rules="rules" v-slot="validationContext">
-    <b-card class="mt-4">
-      <b-form-group
-        :id="'group-' + id"
-        :label="label"
-        :label-for="'input-' + id"
+    <b-form-group
+      :id="'group-' + id"
+      :label="label"
+      :label-for="'input-' + id"
+      :state="getValidationState(validationContext)"
+    >
+      <b-form-select
+        :id="'input-' + id"
+        :name="'input-' + id"
+        v-model="internalValue"
         :state="getValidationState(validationContext)"
+        :options="options"
+        :aria-describedby="'input-live-feedback' + id"
+        @input="onChange"
+      ></b-form-select>
+      <validation-provider
+        v-if="internalValue == otherOptionValue"
+        :name="'other-' + label"
+        :rules="rules"
+        v-slot="validationContext"
       >
-        <b-form-select
-          :id="'input-' + id"
-          :name="'input-' + id"
-          v-model="internalValue"
+        <b-form-input
+          class="mt-3"
+          :id="'input-other-' + id"
+          placeholder="Specificare un valore"
+          v-model="otherValue"
           :state="getValidationState(validationContext)"
-          :options="options"
-          :aria-describedby="'input-live-feedback' + id"
-          @input="onChange"
-        ></b-form-select>
-        <validation-provider
-          v-if="internalValue == otherOptionValue"
-          :name="'other-' + label"
-          :rules="rules"
-          v-slot="validationContext"
-        >
-          <b-form-input
-            class="mt-3"
-            :id="'input-other-' + id"
-            placeholder="Specificare un valore"
-            v-model="otherValue"
-            :state="getValidationState(validationContext)"
-          />
-        </validation-provider>
-        <b-form-invalid-feedback :id="'input-live-feedback' + id">{{
-          validationContext.errors[0]
-        }}</b-form-invalid-feedback>
-      </b-form-group>
-    </b-card>
+        />
+      </validation-provider>
+      <b-form-invalid-feedback :id="'input-live-feedback' + id">{{
+        validationContext.errors[0]
+      }}</b-form-invalid-feedback>
+    </b-form-group>
   </validation-provider>
 </template>
 

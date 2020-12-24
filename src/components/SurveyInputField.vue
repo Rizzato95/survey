@@ -1,28 +1,26 @@
 <template>
   <validation-provider :name="label" :rules="rules" v-slot="validationContext">
-    <b-card class="mt-4">
-      <b-form-group
-        :id="'group-' + id"
-        :label="label"
-        :label-for="'input-' + id"
+    <b-form-group
+      :id="'group-' + id"
+      :label="label"
+      :label-for="'input-' + id"
+      :state="getValidationState(validationContext)"
+    >
+      <b-form-input
+        :id="'input-' + id"
+        :name="'input-' + id"
+        v-model="internalValue"
+        v-money="vMoneyRule"
+        :type="type"
         :state="getValidationState(validationContext)"
-      >
-        <b-form-input
-          :id="'input-' + id"
-          :name="'input-' + id"
-          v-model="internalValue"
-          v-money="vMoneyRule"
-          :type="type"
-          :state="getValidationState(validationContext)"
-          :aria-describedby="'input-live-feedback' + id"
-          @input="onChange"
-          v-mask="vMaskRule"
-        ></b-form-input>
-        <b-form-invalid-feedback :id="'input-live-feedback' + id">{{
-          validationContext.errors[0]
-        }}</b-form-invalid-feedback>
-      </b-form-group>
-    </b-card>
+        :aria-describedby="'input-live-feedback' + id"
+        @input="onChange"
+        v-mask="vMaskRule"
+      ></b-form-input>
+      <b-form-invalid-feedback :id="'input-live-feedback' + id">{{
+        validationContext.errors[0]
+      }}</b-form-invalid-feedback>
+    </b-form-group>
   </validation-provider>
 </template>
 
