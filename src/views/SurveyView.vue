@@ -1,11 +1,9 @@
 <template>
   <div class="text-center">
-    <b-container class="survey__logos">
-      <b-row cols="2">
-        <b-col>
-          <b-img src="../assets/logo-revaluta.png" class="logo-img" />
-        </b-col>
-        <b-col>
+    <b-container class="survey__logos mt-4">
+      <b-row>
+        <b-col align-self="center">
+          <b-img src="../assets/logo-revaluta.png" class="logo-img mr-3" />
           <b-img src="../assets/logo-unicredit.png" class="logo-img" />
         </b-col>
       </b-row>
@@ -117,7 +115,7 @@ export default class SurveyView extends Vue {
 @import "../assets/style/main.scss";
 
 .logo-img {
-  height: 80px;
+  height: 60px;
 }
 
 @media only screen and (max-width: map-get($map: $container-max-widths, $key: lg )) {
@@ -134,7 +132,7 @@ export default class SurveyView extends Vue {
 
 @media only screen and (max-width: map-get($map: $container-max-widths, $key: sm )) {
   .logo-img {
-    height: 40px;
+    height: 35px;
   }
 }
 </style>

@@ -15,7 +15,7 @@
                 class="rounded-circle p-2"
                 :class="[
                   step.isActive
-                    ? 'bg-primary'
+                    ? 'icon-active'
                     : step.isFilled || step.isStarted
                     ? 'bg-white icon-filled'
                     : 'bg-white border icon-disabled',
@@ -25,7 +25,16 @@
                 @click="goToStep(step)"
               ></b-icon>
             </div>
-            <div class="stepper__box-title">
+            <div
+              class="stepper__box-title"
+              :class="[
+                step.isActive
+                  ? 'text-primary font-weight-bold'
+                  : step.isFilled || step.isStarted
+                  ? 'text-primary'
+                  : 'text-muted',
+              ]"
+            >
               {{ step.title }}
             </div>
           </div>
@@ -103,21 +112,14 @@
                   </b-col>
                 </b-row>
               </b-container>
-              <b-container class="mt-4 text-right">
-                <b-row>
-                  <b-col>
-                    <b-button
-                      variant="outline-secondary"
-                      size="lg"
-                      class="mr-3"
-                      @click="onGoBackButtonClick(1)"
-                      >Indietro</b-button
-                    >
+              <b-container class="mt-3 mb-3 text-right">
+                <div class="row">
+                  <div class="col">
                     <b-button variant="primary" type="submit" size="lg"
                       >Avanti
                     </b-button>
-                  </b-col>
-                </b-row>
+                  </div>
+                </div>
               </b-container>
             </b-form>
           </validation-observer>
@@ -221,13 +223,20 @@
                 </b-row>
               </b-container>
               <b-container class="mt-4 text-right">
-                <div class="row">
-                  <div class="col">
+                <b-row>
+                  <b-col>
+                    <b-button
+                      variant="outline-secondary"
+                      size="lg"
+                      class="mr-3"
+                      @click="onGoBackButtonClick(1)"
+                      >Indietro</b-button
+                    >
                     <b-button variant="primary" type="submit" size="lg"
                       >Avanti
                     </b-button>
-                  </div>
-                </div>
+                  </b-col>
+                </b-row>
               </b-container>
             </b-form>
           </validation-observer>
@@ -411,6 +420,12 @@ export default class SurveySteps extends Vue {
     z-index: 10;
   }
 
+  .icon-active {
+    color: $white !important;
+    background-color: $primary;
+    transition: all 0.5s;
+  }
+
   .icon-disabled {
     color: #dfe1e2 !important;
     pointer-events: none;
@@ -427,6 +442,27 @@ export default class SurveySteps extends Vue {
       background-color: $primary !important;
       color: $white !important;
     }
+  }
+}
+
+@media only screen and (max-width: map-get($map: $container-max-widths, $key: lg )) {
+}
+
+@media only screen and (max-width: map-get($map: $container-max-widths, $key: md )) {
+}
+
+@media only screen and (max-width: map-get($map: $container-max-widths, $key: sm )) {
+  .card {
+    border: none;
+  }
+
+  .card-body {
+    padding: 0;
+  }
+
+  .container {
+    padding-right: 10px;
+    padding-left: 10px;
   }
 }
 </style>
