@@ -1,11 +1,5 @@
 <template>
   <div class="login-page">
-    <div class="login-video">
-      <video class="login-video-content" autoplay muted loop>
-        <source src="../assets/login-video.mp4" type="video/mp4" />
-        Your browser is not supported!
-      </video>
-    </div>
     <div class="login-form">
       <img
         class="login-form-logo"
