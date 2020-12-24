@@ -9,6 +9,9 @@ export default class SurveyBaseField extends Vue {
   @Prop({ required: true }) private label!: string;
   /** The validation context */
   @Prop({ required: true }) private value!: string | number | Date;
+  /** The label */
+  @Prop({ default: true }) private isRequired!: boolean;
+
   /** The rules separeted by pipe (|) or the rules object */
   @Prop() private rules!: object | string;
 
@@ -31,3 +34,10 @@ export default class SurveyBaseField extends Vue {
   }
 }
 </script>
+<style lang="scss">
+@import "../assets/style/main.scss";
+.required > label::after {
+  content: "  *" !important;
+  color: $primary !important;
+}
+</style>

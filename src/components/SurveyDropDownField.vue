@@ -5,6 +5,7 @@
       :label="label"
       :label-for="'input-' + id"
       :state="getValidationState(validationContext)"
+      :class="{ required: isRequired }"
     >
       <b-form-select
         :id="'input-' + id"
