@@ -74,64 +74,72 @@
       <validation-observer ref="observer" v-slot="{ handleSubmit }">
         <b-form @submit.stop.prevent="handleSubmit(onPersonalDataSubmit)">
           <b-container class="text-left mt-4">
-            <!-- Name -->
-            <survey-input-field
-              id="name"
-              label="Nome"
-              rules="required"
-              type="text"
-              v-model="localSurvey.name"
-            />
-            <!-- Surname -->
-            <survey-input-field
-              id="surname"
-              label="Cognome"
-              rules="required"
-              type="text"
-              v-model="localSurvey.surname"
-            />
-            <!-- Fiscal code -->
-            <survey-input-field
-              id="fiscal-code"
-              label="Codice fiscale"
-              type="text"
-              v-model="localSurvey.fiscalCode"
-              :rules="{
-                required: true,
-                regex: /^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$|([0-9]{11})$/,
-              }"
-              vMaskRule="XXXXXXXXXXXXXXXX"
-            />
-            <!-- Email -->
-            <survey-input-field
-              id="email"
-              label="Email"
-              rules="required|email"
-              type="email"
-              v-model="localSurvey.email"
-            />
-            <!-- Phone -->
-            <survey-input-field
-              id="phone"
-              label="Telefono"
-              rules="required"
-              type="tel"
-              v-model="localSurvey.phone"
-              vMaskRule="############"
-            />
-            <survey-drop-down-field
-              id="role"
-              label="Qualifica"
-              rules="required"
-              otherOptionValue="c"
-              v-model="localSurvey.role"
-            />
-            <survey-radio-field
-              id="role"
-              label="Test"
-              rules="required"
-              v-model="localSurvey.test"
-            />
+            <b-row>
+              <b-col sm="6">
+                <!-- Name -->
+                <survey-input-field
+                  id="name"
+                  label="Nome"
+                  rules="required"
+                  type="text"
+                  v-model="localSurvey.name"
+                />
+              </b-col>
+              <!-- Surname -->
+              <b-col sm="6">
+                <survey-input-field
+                  id="surname"
+                  label="Cognome"
+                  rules="required"
+                  type="text"
+                  v-model="localSurvey.surname"
+                />
+                <!-- Fiscal code -->
+              </b-col>
+              <b-col sm="6">
+                <survey-input-field
+                  id="fiscal-code"
+                  label="Codice fiscale"
+                  type="text"
+                  v-model="localSurvey.fiscalCode"
+                  :rules="{
+                    required: true,
+                    regex: /^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$|([0-9]{11})$/,
+                  }"
+                  vMaskRule="XXXXXXXXXXXXXXXX"
+                />
+                <!-- Email -->
+              </b-col>
+              <b-col sm="6">
+                <survey-input-field
+                  id="email"
+                  label="Email"
+                  rules="required|email"
+                  type="email"
+                  v-model="localSurvey.email"
+                />
+                <!-- Phone -->
+              </b-col>
+              <b-col sm="6">
+                <survey-input-field
+                  id="phone"
+                  label="Telefono"
+                  rules="required"
+                  type="tel"
+                  v-model="localSurvey.phone"
+                  vMaskRule="############"
+                />
+              </b-col>
+              <b-col sm="6">
+                <survey-drop-down-field
+                  id="role"
+                  label="Qualifica"
+                  rules="required"
+                  otherOptionValue="c"
+                  v-model="localSurvey.role"
+                />
+              </b-col>
+            </b-row>
           </b-container>
           <b-container class="mt-4 text-right">
             <div class="row">
