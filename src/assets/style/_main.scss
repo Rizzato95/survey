@@ -2,8 +2,17 @@ $container-max-widths: (
   sm: 540px,
   md: 720px,
   lg: 960px,
-  xl: 1400px
+  xl: 1440px
 );
+
+$primary: #007ca9;
+$secondary: #001f48;
+
+$input-focus-border-color: $primary;
+$border-radius: 1rem;
+$input-focus-box-shadow: none !important;
+$input-btn-focus-box-shadow: none !important;
+
 // $input-border-radius: 0;
 // $input-padding-y: 1rem;
 
