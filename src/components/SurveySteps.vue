@@ -567,7 +567,11 @@ export default class SurveySteps extends Vue {
       border: 3px solid $primary;
     }
   }
-
+  
+  .b-icon {
+    font-size: 300% !important;
+  }
+  
   .icon-disabled {
     color: #dfe1e2 !important;
     background-color: $white;
