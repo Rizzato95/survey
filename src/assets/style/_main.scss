@@ -8,10 +8,15 @@ $container-max-widths: (
 $primary: #007ca9;
 $secondary: #001f48;
 
+$font-family-sans-serif:  'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+
 $input-focus-border-color: $primary;
 $border-radius: 1rem;
 $input-focus-box-shadow: none !important;
 $input-btn-focus-box-shadow: none !important;
+
+$form-group-margin-bottom: 1.5rem;
 
 // $input-border-radius: 0;
 // $input-padding-y: 1rem;
