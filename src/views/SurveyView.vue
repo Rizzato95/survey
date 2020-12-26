@@ -165,11 +165,13 @@ export default class SurveyView extends Vue {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
+    width: calc(100% - 2rem);
   }
 
   .survey__button {
-    padding: 1rem 6rem !important;
+    padding: 1rem 1rem !important;
+    display: block;
+    width: 100%;
   }
 
   .survey__intro {
