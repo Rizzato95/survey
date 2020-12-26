@@ -30,7 +30,7 @@
 
 <script lang="ts">
 /** Import vue property decorator */
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 /** Import base class */
 import SurveyBaseField from './SurveyBaseField.vue';
@@ -42,8 +42,8 @@ export default class SurveyRadioField extends SurveyBaseField {
     { text: 'No', value: false }
   ]
 
-  private created() {
-    this.internalValue = null;
+  @Watch('value') onValueChanged(value: boolean) {
+    this.internalValue = value;
   }
 }
 </script>
