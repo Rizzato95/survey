@@ -200,7 +200,7 @@
                       id="intervention-cost"
                       label="Fornire una stima del costo dell'intervento."
                       :isRequired="false"
-                      type="number"
+                      type="text"
                       v-model="survey.interventionCost"
                       :vMoneyRule="{
                         decimal: ',',
