@@ -157,17 +157,15 @@ export default class SurveyView extends Vue {
     padding: 1rem 0rem !important;
   }
   .logo-img {
-    height: 35px;
+    height: 30px;
   }
 
   .survey__start-card {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: translate(0, 0);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
-    height: 100vh;
-    border-radius: 0px;
   }
 
   .survey__button {
@@ -176,7 +174,7 @@ export default class SurveyView extends Vue {
 
   .survey__intro {
     &-title {
-      padding: 5rem 0rem;
+      padding: 3rem 0rem;
       font-size: 2rem;
       color: $primary;
     }
