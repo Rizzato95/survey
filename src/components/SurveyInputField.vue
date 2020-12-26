@@ -13,7 +13,7 @@
         v-model="internalValue"
         v-money="vMoneyRule"
         :type="type"
-        :state="getValidationState(validationContext)"
+        :state="rules ? getValidationState(validationContext) : null"
         :aria-describedby="'input-live-feedback' + id"
         @input="onChange"
         v-mask="vMaskRule"
