@@ -7,14 +7,9 @@ Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/survey',
+    path: '/',
     name: 'Survey',
     component: Survey
-  },
-  {
-    path: '/',
-    name: 'Login',
-    component: Login
   }
 ]
 

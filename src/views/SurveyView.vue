@@ -1,73 +1,87 @@
 <template>
-  <div class="text-center">
-    <b-container class="survey__logos mt-4">
-      <b-row>
-        <b-col align-self="center">
-          <b-img src="../assets/logo-revaluta.png" class="logo-img mr-3" />
-          <b-img src="../assets/logo-unicredit.png" class="logo-img" />
-        </b-col>
-      </b-row>
-    </b-container>
-    <!-- Intro -->
-    <div v-if="!isSurveyVisible">
-      <b-container class="survey__intro">
+  <div>
+    <div v-if="!isSurveyVisible" class="text-center">
+      <b-container class="survey__logos mt-4">
         <b-row>
-          <b-col>
-            <h1 class="survery__intro-title">Green110 - Superbonus Revaluta</h1>
-          </b-col>
-        </b-row>
-        <b-row class="w-80">
-          <b-col>
-            <b-img
-              fluid
-              src="../assets/workers.jpg"
-              class="survey__intro-workers"
-            />
+          <b-col align-self="center">
+            <b-img src="../assets/logo-revaluta.png" class="logo-img mr-3" />
+            <b-img src="../assets/logo-unicredit.png" class="logo-img" />
           </b-col>
         </b-row>
       </b-container>
-      <b-container>
-        <div class="row">
-          <div class="col">
-            <b-form-checkbox
-              id="checkbox"
-              v-model="areTermsAccepted"
-              name="checkbox-1"
-            >
-              Per poter proseguire confermare la presa visione dell'informativa
-              sul trattamento dei dati.
-            </b-form-checkbox>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <b-link href="https://www.warranthub.it/privacy/" target="__blank"
-              >Mostrare i termini</b-link
-            >
-          </div>
-        </div>
-      </b-container>
-      <b-container class="mt-4">
-        <div class="row">
-          <div class="col">
-            <span id="confirm-step-1">
-              <b-button
-                variant="outline-primary"
-                size="lg"
-                :disabled="!areTermsAccepted"
-                @click="startSurvey"
-                >Avanti</b-button
+      <!-- Intro -->
+      <div>
+        <b-container class="survey__intro">
+          <b-row>
+            <b-col>
+              <h1 class="survery__intro-title">
+                Green110 - Superbonus Revaluta
+              </h1>
+            </b-col>
+          </b-row>
+          <b-row class="w-80">
+            <b-col>
+              <b-img
+                fluid
+                src="../assets/workers.jpg"
+                class="survey__intro-workers"
+              />
+            </b-col>
+          </b-row>
+        </b-container>
+        <b-container>
+          <div class="row">
+            <div class="col">
+              <b-form-checkbox
+                id="checkbox"
+                v-model="areTermsAccepted"
+                name="checkbox-1"
               >
-            </span>
-            <b-tooltip v-if="!areTermsAccepted" target="confirm-step-1">
-              Per proseguire è necessario confermare la presa visione
-              dell'informativa sul trattamento dei dati.
-            </b-tooltip>
+                Per poter proseguire confermare la presa visione
+                dell'informativa sul trattamento dei dati.
+              </b-form-checkbox>
+            </div>
           </div>
-        </div>
-      </b-container>
+          <div class="row">
+            <div class="col">
+              <b-link href="https://www.warranthub.it/privacy/" target="__blank"
+                >Mostrare i termini</b-link
+              >
+            </div>
+          </div>
+        </b-container>
+        <b-container class="mt-4">
+          <div class="row">
+            <div class="col">
+              <span id="confirm-step-1">
+                <b-button
+                  variant="outline-primary"
+                  size="lg"
+                  :disabled="!areTermsAccepted"
+                  @click="startSurvey"
+                  >Avanti</b-button
+                >
+              </span>
+              <b-tooltip v-if="!areTermsAccepted" target="confirm-step-1">
+                Per proseguire è necessario confermare la presa visione
+                dell'informativa sul trattamento dei dati.
+              </b-tooltip>
+            </div>
+          </div>
+        </b-container>
+      </div>
     </div>
-    <SurveySteps v-if="isSurveyVisible" />
+    <div v-else>
+      <b-container class="text-center survey__logos mt-4">
+        <b-row>
+          <b-col align-self="center">
+            <b-img src="../assets/logo-revaluta.png" class="logo-img mr-3" />
+            <b-img src="../assets/logo-unicredit.png" class="logo-img" />
+          </b-col>
+        </b-row>
+      </b-container>
+      <SurveySteps />
+    </div>
   </div>
 </template>
 
