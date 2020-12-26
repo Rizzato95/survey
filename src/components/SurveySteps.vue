@@ -45,7 +45,7 @@
             <b-form @submit.stop.prevent="handleSubmit(onNextButtonClick)">
               <b-container class="text-left mt-4">
                 <b-row>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Name -->
                     <survey-input-field
                       id="name"
@@ -56,7 +56,7 @@
                     />
                   </b-col>
                   <!-- Surname -->
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <survey-input-field
                       id="surname"
                       label="Cognome"
@@ -66,7 +66,7 @@
                     />
                     <!-- Fiscal code -->
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <survey-input-field
                       id="fiscal-code"
                       label="Codice fiscale / Partita IVA"
@@ -81,7 +81,7 @@
                     />
                     <!-- Email -->
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <survey-input-field
                       id="email"
                       label="Email"
@@ -91,7 +91,7 @@
                     />
                     <!-- Phone -->
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <survey-input-field
                       id="phone"
                       label="Telefono"
@@ -101,7 +101,7 @@
                       vMaskRule="############"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <survey-drop-down-field
                       id="role"
                       label="Qualifica"
@@ -130,7 +130,7 @@
             <b-form @submit.stop.prevent="handleSubmit(onNextButtonClick)">
               <b-container class="text-left mt-4">
                 <b-row>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Recipient -->
                     <survey-drop-down-field
                       id="recipient"
@@ -139,7 +139,7 @@
                       v-model="survey.recipient"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Building type -->
                     <survey-drop-down-field
                       id="buildingType"
@@ -148,7 +148,7 @@
                       v-model="survey.interventionType"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Intervention type -->
                     <survey-drop-down-field
                       id="interventionType"
@@ -157,7 +157,7 @@
                       v-model="survey.buildingType"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Energy Performance Certificate -->
                     <survey-radio-field
                       id="energyCertificate"
@@ -166,7 +166,7 @@
                       v-model="survey.hasEnergyPerformanceCertificate"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Building energetic class -->
                     <survey-drop-down-field
                       id="builiding-energetic-class"
@@ -175,7 +175,7 @@
                       v-model="survey.buildingEnergeticClass"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Energetic riqualification projecft -->
                     <survey-radio-field
                       id="energetic-riqualification-project"
@@ -184,7 +184,7 @@
                       v-model="survey.hasEnergeticRiqualification"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Suppliers quotes -->
                     <survey-radio-field
                       id="suppliers-quotes"
@@ -193,7 +193,7 @@
                       v-model="survey.hasSuppliersQuotes"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Intervention cost -->
                     <survey-input-field
                       id="intervention-cost"
@@ -206,12 +206,11 @@
                         thousands: '.',
                         prefix: '€ ',
                         precision: 0,
-                        masked: false,
                       }"
                       vMaskRule="##########"
                     />
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="12">
                     <!-- Works are already started -->
                     <survey-radio-field
                       id="works-already-started"
@@ -222,24 +221,60 @@
                   </b-col>
                 </b-row>
               </b-container>
-              <b-container class="mt-4 text-right">
+              <b-container class="mt-3 mb-3 text-right">
                 <b-row>
                   <b-col>
+                    <b-button class="d-none"></b-button>
                     <b-button
                       variant="outline-secondary"
                       size="lg"
                       class="mr-3"
+                      :disabled="isSaveInProgress"
                       @click="onGoBackButtonClick(1)"
                       >Indietro</b-button
                     >
-                    <b-button variant="primary" type="submit" size="lg"
-                      >Avanti
+                    <b-button
+                      variant="primary"
+                      type="submit"
+                      size="lg"
+                      :disabled="isSaveInProgress"
+                    >
+                      <b-spinner v-if="isSaveInProgress"></b-spinner>
+                      Conferma
                     </b-button>
                   </b-col>
                 </b-row>
               </b-container>
             </b-form>
           </validation-observer>
+        </div>
+        <div v-if="currentStep.type == 3">
+          <b-container class="p-4 container__confirm">
+            <b-row>
+              <b-col>
+                <b-icon
+                  icon="envelope"
+                  class="text-primary container__confirm-icon mb-4"
+                  font-scale="4"
+                ></b-icon>
+                <p class="container__confirm-text h5">
+                  Grazie per aver completato le informazioni, riceverai nelle
+                  prossime ore la guida direttamente al tuo indirizzo di posta.
+                </p></b-col
+              >
+            </b-row>
+            <b-row class="mt-4">
+              <b-col>
+                <b-button
+                  variant="primary"
+                  size="lg"
+                  @click="onNextButtonClick"
+                >
+                  Nuovo sondaggio
+                </b-button>
+              </b-col>
+            </b-row>
+          </b-container>
         </div>
       </b-card>
     </b-container>
@@ -314,7 +349,27 @@ export default class SurveySteps extends Vue {
   /** Indicates the current survey  */
   private currentStep: SurveyStep = this.steps[0];
   /** Indicates the previous step */
-  private previousStep: SurveyStep = this.steps[1];
+  private previousStep: SurveyStep = this.steps[0];
+  /** Indicates if the save is in progress */
+  private isSaveInProgress = false;
+
+  created() {
+    this.survey.name = 'Marco';
+    this.survey.surname = 'Rizzato';
+    this.survey.buildingEnergeticClass = 'b';
+    this.survey.hasEnergeticRiqualification = true;
+    this.survey.hasSuppliersQuotes = true;
+    this.survey.interventionCost = 1000;
+    this.survey.hasStartEnergeticRiqualification = false;
+    this.survey.fiscalCode = 'RZZMRC95T29L407W';
+    this.survey.email = 'r.m@gmail.com';
+    this.survey.phone = '3484110899';
+    this.survey.role = 'b';
+    this.survey.recipient = 'b';
+    this.survey.buildingType = 'b';
+    this.survey.interventionType = 'b';
+    this.survey.hasEnergyPerformanceCertificate = true;
+  }
 
   private get currentStepIndex() {
     return this.steps.indexOf(this.currentStep);
@@ -347,40 +402,108 @@ export default class SurveySteps extends Vue {
    * Fires on next button click
    */
   private async onNextButtonClick() {
-    this.currentStep.isFilled = true;
-    this.currentStep.isActive = false;
-    this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
-
     switch (this.currentStep.type) {
-      case SurveyStepType.PersonalData:
-      case SurveyStepType.BuildingData:
+      case SurveyStepType.PersonalData: {
+        this.currentStep.isFilled = true;
+        this.currentStep.isActive = false;
+        this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
 
         this.currentStep = this.steps[this.currentStepIndex + 1];
         this.currentStep.isActive = true;
         this.currentStep.isStarted = true;
+
+        this.scrollToTop();
         break;
-      case SurveyStepType.End:
-        this.$emit('survey-complete', this.survey);
+      }
+      case SurveyStepType.BuildingData: {
+        const result = await this.saveSurvey();
+        if (result) {
+          this.currentStep.isFilled = true;
+          this.currentStep.isActive = false;
+          this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
+
+          this.currentStep = this.steps[this.currentStepIndex + 1];
+          this.currentStep.isActive = true;
+          this.currentStep.isStarted = true;
+        }
+        break;
+      }
+      case SurveyStepType.End: {
+
+        this.initializeSurvey();
+        break;
+      }
     }
+  }
+
+  private scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  private sleep = (m: any) => new Promise(r => setTimeout(r, m))
+
+  private async saveSurvey(): Promise<boolean> {
+    this.isSaveInProgress = true;
+    await this.sleep(3000)
+    this.isSaveInProgress = false;
+
+    return true;
+  }
+
+  private async validate() {
+    const el: any = this.$refs.observer;
+    console.log(el);
+    const isValid = await el.validate();
+
+    if (!isValid) {
+      const el = document.querySelector(".v-messages.error--text:first-of-type");
+      el?.scrollIntoView();
+      return;
+    }
+    return isValid;
   }
 
   /**
    * Fires on previous button click
    */
   private onGoBackButtonClick() {
-    this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
-    this.currentStep = this.steps[this.currentStepIndex - 1];
-  }
-
-  private goToStep(step: SurveyStep) {
     this.currentStep.isActive = false;
     this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
 
-    this.currentStep = step;
+    this.currentStep = this.steps[this.currentStepIndex - 1];
     this.currentStep.isActive = true;
+
+    this.scrollToTop();
   }
 
-  private show = false;
+  private async goToStep(step: SurveyStep) {
+    if (step.type < this.currentStep.type || await this.validate()) {
+      this.currentStep.isActive = false;
+      this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
+
+      this.currentStep = step;
+      this.currentStep.isActive = true;
+    }
+  }
+
+  private initializeSurvey() {
+    this.survey = new Survey();
+
+    this.steps.forEach((step: SurveyStep) => {
+      step.isActive = false;
+      step.isStarted = false;
+      step.isFilled = false;
+    });
+
+    this.currentStep = this.steps[0];
+    this.previousStep = this.steps[0];
+
+    this.currentStep.isActive = true;
+  }
 }
 </script>
 
@@ -411,7 +534,7 @@ export default class SurveySteps extends Vue {
   &__progress-active {
     width: 20%;
     border-bottom: 3px solid $primary;
-    transition: all 1s;
+    transition: all 2s;
   }
 
   &__box {
@@ -424,6 +547,7 @@ export default class SurveySteps extends Vue {
     color: $white !important;
     background-color: $primary;
     transition: all 0.5s;
+    border: none !important;
   }
 
   .icon-disabled {
@@ -445,6 +569,28 @@ export default class SurveySteps extends Vue {
   }
 }
 
+.container__confirm {
+  padding: 5rem 6rem !important;
+
+  &-icon {
+    font-size: 600% !important;
+  }
+}
+
+.card {
+  border: none;
+  box-shadow: 0px 0px 20px 1px #d4d0d0;
+}
+
+.container {
+  max-width: 960px;
+}
+
+.spinner-border {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
 @media only screen and (max-width: map-get($map: $container-max-widths, $key: lg )) {
 }
 
@@ -454,6 +600,7 @@ export default class SurveySteps extends Vue {
 @media only screen and (max-width: map-get($map: $container-max-widths, $key: sm )) {
   .card {
     border: none;
+    box-shadow: none;
   }
 
   .card-body {
@@ -463,6 +610,14 @@ export default class SurveySteps extends Vue {
   .container {
     padding-right: 10px;
     padding-left: 10px;
+  }
+
+  .stepper {
+    margin: 0 !important;
+  }
+
+  .container__confirm {
+    padding: 5rem 0rem !important;
   }
 }
 </style>
