@@ -16,7 +16,7 @@ export default class SurveyBaseField extends Vue {
   @Prop() private rules!: object | string;
 
   /** The internal value for manage v-model correctly */
-  protected internalValue: string | number | Date | null = this.value ?? '';
+  protected internalValue: string | boolean | number | Date | null = this.value ?? '';
 
   /**
    * Validation state method
