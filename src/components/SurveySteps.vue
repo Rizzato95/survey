@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container>
-      <b-card class="text-center mt-4">
+      <b-card class="text-center steps__card">
         <div class="stepper m-4">
           <div class="stepper__progress"></div>
           <div
@@ -520,6 +520,11 @@ export default class SurveySteps extends Vue {
   box-shadow: none !important;
 }
 
+.steps__card {
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
 .stepper {
   display: flex;
   position: relative;
@@ -609,6 +614,10 @@ export default class SurveySteps extends Vue {
 }
 
 @media only screen and (max-width: map-get($map: $container-max-widths, $key: sm )) {
+  .steps__card {
+    margin-bottom: 0 !important;
+  }
+
   .card {
     border: none;
     box-shadow: none;
