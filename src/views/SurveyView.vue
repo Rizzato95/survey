@@ -162,9 +162,9 @@ export default class SurveyView extends Vue {
 
   .survey__start-card {
     position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
     width: 100%;
     height: 100vh;
     border-radius: 0px;
