@@ -16,7 +16,7 @@
                 :class="[
                   step.isFilled
                     ? 'icon-filled'
-                    : step.isActive || step.isStarted
+                    : step.isActive
                     ? 'icon-active'
                     : 'border icon-disabled icon-events-none',
                   isSurveyComplete ? 'icon-events-none' : '',
@@ -31,7 +31,7 @@
               :class="[
                 step.isActive
                   ? 'text-primary font-weight-bold'
-                  : step.isFilled || step.isStarted
+                  : step.isFilled
                   ? 'text-primary'
                   : 'text-muted',
               ]"
@@ -42,8 +42,8 @@
         </div>
         <!-- Personal data -->
         <div v-if="currentStep.type == 1">
-          <validation-observer ref="observer" v-slot="{ handleSubmit }">
-            <b-form @submit.stop.prevent="handleSubmit(onNextButtonClick)">
+          <validation-observer ref="observer">
+            <b-form @submit.stop.prevent="onNextButtonClick">
               <b-container class="text-left mt-4">
                 <b-row>
                   <b-col sm="12">
@@ -113,6 +113,7 @@
                   </b-col>
                 </b-row>
               </b-container>
+
               <b-container class="mt-3 mb-3 text-right">
                 <div class="row">
                   <div class="col">
@@ -127,8 +128,8 @@
         </div>
         <!-- Building data -->
         <div v-if="currentStep.type == 2">
-          <validation-observer ref="observer" v-slot="{ handleSubmit }">
-            <b-form @submit.stop.prevent="handleSubmit(onNextButtonClick)">
+          <validation-observer ref="observer">
+            <b-form @submit.stop.prevent="onNextButtonClick">
               <b-container class="text-left mt-4">
                 <b-row>
                   <b-col sm="12">
@@ -325,7 +326,6 @@ export default class SurveySteps extends Vue {
     {
       isActive: true,
       isFilled: false,
-      isStarted: true,
       icon: 'person',
       title: 'Anagrafica',
       type: SurveyStepType.PersonalData
@@ -333,7 +333,6 @@ export default class SurveySteps extends Vue {
     {
       isActive: false,
       isFilled: false,
-      isStarted: false,
       icon: 'house',
       title: 'Dati immobile',
       type: SurveyStepType.BuildingData
@@ -341,7 +340,6 @@ export default class SurveySteps extends Vue {
     {
       isActive: false,
       isFilled: false,
-      isStarted: false,
       icon: 'check2',
       title: 'Conferma',
       type: SurveyStepType.End
@@ -355,6 +353,19 @@ export default class SurveySteps extends Vue {
   private isSaveInProgress = false;
   /** Indicates if the survey is complete or not */
   private isSurveyComplete = false;
+
+  /** The current step index */
+  private get currentStepIndex() {
+    return this.steps.indexOf(this.currentStep);
+  }
+
+  /** The active progress length  */
+  private get progressLength() {
+    // if (this.currentStep === SurveyStepType.End)
+    //   return 100;
+    // else
+    return ((this.currentStepIndex + 1) / this.steps.length) * 100 - 100 / this.steps.length / 2;
+  }
 
   created() {
     this.survey.name = 'Marco';
@@ -374,72 +385,47 @@ export default class SurveySteps extends Vue {
     this.survey.hasEnergyPerformanceCertificate = true;
   }
 
-  private get currentStepIndex() {
-    return this.steps.indexOf(this.currentStep);
-  }
-
-  private get progressLength() {
-    // if (this.currentStep === SurveyStepType.End)
-    //   return 100;
-    // else
-    return ((this.currentStepIndex + 1) / this.steps.length) * 100 - 100 / this.steps.length / 2;
-  }
-
-  private get enterAnimation() {
-    if (this.currentStep.type < this.previousStep.type) {
-      return "animated quick fadeInLeft";
-    } else {
-      return "animated quick fadeInRight";
-    }
-  }
-
-  private get leaveAnimation() {
-    if (this.currentStep.type > this.previousStep.type) {
-      return "animated quick fadeOutLeft";
-    } else {
-      return "animated quick fadeOutRight";
-    }
+  /**
+   * Fires on previous button click
+   */
+  private async onGoBackButtonClick() {
+    if (await this.validate())
+      this.changeActiveStep(this.steps[this.currentStepIndex - 1]);
   }
 
   /**
    * Fires on next button click
    */
   private async onNextButtonClick() {
-    switch (this.currentStep.type) {
-      case SurveyStepType.PersonalData: {
-        this.currentStep.isFilled = true;
-        this.currentStep.isActive = false;
-        this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
+    if (await this.validate())
+      switch (this.currentStep.type) {
+        case SurveyStepType.PersonalData: {
 
-        this.currentStep = this.steps[this.currentStepIndex + 1];
-        this.currentStep.isActive = true;
-        this.currentStep.isStarted = true;
-
-        this.scrollToTop();
-        break;
-      }
-      case SurveyStepType.BuildingData: {
-        const result = await this.saveSurvey();
-        if (result) {
-          this.isSurveyComplete = true;
           this.currentStep.isFilled = true;
-          this.currentStep.isActive = false;
-          this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
-
-          this.currentStep = this.steps[this.currentStepIndex + 1];
-          this.currentStep.isActive = true;
-          this.currentStep.isStarted = true;
+          this.changeActiveStep(this.steps[this.currentStepIndex + 1])
+          break;
         }
-        break;
-      }
-      case SurveyStepType.End: {
+        case SurveyStepType.BuildingData: {
+          const result = await this.saveSurvey();
+          if (result) {
+            this.isSurveyComplete = true;
+            this.currentStep.isFilled = true;
 
-        this.initializeSurvey();
-        break;
+            this.changeActiveStep(this.steps[this.currentStepIndex + 1]);
+            this.currentStep.isFilled = true;
+          }
+          break;
+        }
+        case SurveyStepType.End: {
+          this.initializeSurvey();
+          break;
+        }
       }
-    }
   }
 
+  /**
+   * Scroll the cursor to the top (for mobile)
+   */
   private scrollToTop() {
     window.scrollTo({
       top: 0,
@@ -450,6 +436,9 @@ export default class SurveySteps extends Vue {
 
   private sleep = (m: any) => new Promise(r => setTimeout(r, m))
 
+  /**
+   * Save the current survey
+   */
   private async saveSurvey(): Promise<boolean> {
     this.isSaveInProgress = true;
     await this.sleep(3000)
@@ -458,41 +447,37 @@ export default class SurveySteps extends Vue {
     return true;
   }
 
+  /**
+   * Validate the fields in the current step
+   */
   private async validate() {
     const el: any = this.$refs.observer;
-    console.log(el);
     const isValid = await el.validate();
 
     if (!isValid) {
-      const el = document.querySelector(".v-messages.error--text:first-of-type");
-      el?.scrollIntoView();
-      return;
+      // Set the  fo
+      const textbox: any = document.getElementsByClassName('is-invalid')[0];
+      textbox?.focus();
     }
     return isValid;
   }
 
-  /**
-   * Fires on previous button click
-   */
-  private onGoBackButtonClick() {
+  private async goToStep(step: SurveyStep) {
+    if (!this.isSurveyComplete && step.type < this.currentStep.type || await this.validate()) {
+
+      this.changeActiveStep(step);
+      this.currentStep.isFilled = false;
+    }
+  }
+
+  private changeActiveStep(newStep: SurveyStep) {
     this.currentStep.isActive = false;
     this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
 
-    this.currentStep = this.steps[this.currentStepIndex - 1];
+    this.currentStep = newStep;
     this.currentStep.isActive = true;
 
     this.scrollToTop();
-  }
-
-  private async goToStep(step: SurveyStep) {
-    if (!this.isSurveyComplete && step.type < this.currentStep.type || await this.validate()) {
-      this.currentStep.isActive = false;
-      this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
-
-      this.currentStep = step;
-      this.currentStep.isFilled = false;
-      this.currentStep.isActive = true;
-    }
   }
 
   private initializeSurvey() {
@@ -501,7 +486,6 @@ export default class SurveySteps extends Vue {
 
     this.steps.forEach((step: SurveyStep) => {
       step.isActive = false;
-      step.isStarted = false;
       step.isFilled = false;
     });
 
@@ -567,11 +551,7 @@ export default class SurveySteps extends Vue {
       border: 3px solid $primary;
     }
   }
-  
-  .b-icon {
-    font-size: 300% !important;
-  }
-  
+
   .icon-disabled {
     color: #dfe1e2 !important;
     background-color: $white;

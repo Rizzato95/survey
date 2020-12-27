@@ -9,8 +9,6 @@ export class SurveyStep {
     public icon!: string;
     /** Indicates if the step is active */
     public isActive!: boolean;
-    /** Indicates if a step is started */
-    public isStarted!: boolean;
     /** Indicates if the step is filled */
     public isFilled!: boolean;
 }
