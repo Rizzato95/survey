@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-container>
-      <b-card class="text-center steps__card">
+    <b-container class="">
+      <b-card class="text-center steps__card overflow-hidden">
         <div class="stepper m-4">
           <div class="stepper__progress"></div>
           <div
@@ -41,244 +41,251 @@
           </div>
         </div>
         <!-- Personal data -->
-        <div v-if="currentStep.type == 1">
-          <validation-observer ref="observer">
-            <b-form @submit.stop.prevent="onNextButtonClick">
-              <b-container class="text-left mt-4">
-                <b-row>
-                  <b-col sm="12">
-                    <!-- Name -->
-                    <survey-input-field
-                      id="name"
-                      label="Nome"
-                      rules="required"
-                      type="text"
-                      v-model="survey.name"
-                    />
-                  </b-col>
-                  <!-- Surname -->
-                  <b-col sm="12">
-                    <survey-input-field
-                      id="surname"
-                      label="Cognome"
-                      rules="required"
-                      type="text"
-                      v-model="survey.surname"
-                    />
-                    <!-- Fiscal code -->
-                  </b-col>
-                  <b-col sm="12">
-                    <survey-input-field
-                      id="fiscal-code"
-                      label="Codice fiscale / Partita IVA"
-                      type="text"
-                      v-model="survey.fiscalCode"
-                      :rules="{
-                        required: true,
-                        min: 11,
-                        regex: /^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$|([0-9]{11})$/,
-                      }"
-                      vMaskRule="XXXXXXXXXXXXXXXX"
-                    />
-                    <!-- Email -->
-                  </b-col>
-                  <b-col sm="12">
-                    <survey-input-field
-                      id="email"
-                      label="Email"
-                      rules="required|email"
-                      type="email"
-                      v-model="survey.email"
-                    />
-                    <!-- Phone -->
-                  </b-col>
-                  <b-col sm="12">
-                    <survey-input-field
-                      id="phone"
-                      label="Telefono"
-                      rules="required"
-                      type="tel"
-                      v-model="survey.phone"
-                      vMaskRule="############"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <survey-drop-down-field
-                      id="role"
-                      label="Qualifica"
-                      rules="required"
-                      otherOptionValue="c"
-                      v-model="survey.role"
-                    />
-                  </b-col>
-                </b-row>
-              </b-container>
+        <transition
+          :enter-active-class="enterAnimation"
+          :leave-active-class="leaveAnimation"
+          mode="out-in"
+        >
+          <div v-if="currentStep.type == 1" key="personal-data">
+            <validation-observer ref="observer">
+              <b-form @submit.stop.prevent="onNextButtonClick">
+                <b-container class="text-left mt-4">
+                  <b-row>
+                    <b-col sm="12">
+                      <!-- Name -->
+                      <survey-input-field
+                        id="name"
+                        label="Nome"
+                        rules="required"
+                        type="text"
+                        v-model="survey.name"
+                      />
+                    </b-col>
+                    <!-- Surname -->
+                    <b-col sm="12">
+                      <survey-input-field
+                        id="surname"
+                        label="Cognome"
+                        rules="required"
+                        type="text"
+                        v-model="survey.surname"
+                      />
+                      <!-- Fiscal code -->
+                    </b-col>
+                    <b-col sm="12">
+                      <survey-input-field
+                        id="fiscal-code"
+                        label="Codice fiscale / Partita IVA"
+                        type="text"
+                        v-model="survey.fiscalCode"
+                        :rules="{
+                          required: true,
+                          min: 11,
+                          regex: /^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$|([0-9]{11})$/,
+                        }"
+                        vMaskRule="XXXXXXXXXXXXXXXX"
+                      />
+                      <!-- Email -->
+                    </b-col>
+                    <b-col sm="12">
+                      <survey-input-field
+                        id="email"
+                        label="Email"
+                        rules="required|email"
+                        type="email"
+                        v-model="survey.email"
+                      />
+                      <!-- Phone -->
+                    </b-col>
+                    <b-col sm="12">
+                      <survey-input-field
+                        id="phone"
+                        label="Telefono"
+                        rules="required"
+                        type="tel"
+                        v-model="survey.phone"
+                        vMaskRule="############"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <survey-drop-down-field
+                        id="role"
+                        label="Qualifica"
+                        rules="required"
+                        otherOptionValue="c"
+                        v-model="survey.role"
+                      />
+                    </b-col>
+                  </b-row>
+                </b-container>
 
-              <b-container class="mt-3 mb-3 text-right">
-                <div class="row">
-                  <div class="col">
-                    <b-button variant="primary" type="submit" size="lg"
-                      >Avanti
-                    </b-button>
+                <b-container class="mt-3 mb-3 text-right">
+                  <div class="row">
+                    <div class="col">
+                      <b-button variant="primary" type="submit" size="lg"
+                        >Avanti
+                      </b-button>
+                    </div>
                   </div>
-                </div>
-              </b-container>
-            </b-form>
-          </validation-observer>
-        </div>
-        <!-- Building data -->
-        <div v-if="currentStep.type == 2">
-          <validation-observer ref="observer">
-            <b-form @submit.stop.prevent="onNextButtonClick">
-              <b-container class="text-left mt-4">
-                <b-row>
-                  <b-col sm="12">
-                    <!-- Recipient -->
-                    <survey-drop-down-field
-                      id="recipient"
-                      label="Il beneficiario del SUPERBONUS sarà"
-                      rules="required"
-                      v-model="survey.recipient"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Building type -->
-                    <survey-drop-down-field
-                      id="buildingType"
-                      label="Indichi la tipologia di edificio che sarà oggetto dell'intervento"
-                      rules="required"
-                      v-model="survey.interventionType"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Intervention type -->
-                    <survey-drop-down-field
-                      id="interventionType"
-                      label="Indichi la tipologia di intervento"
-                      rules="required"
-                      v-model="survey.buildingType"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Energy Performance Certificate -->
-                    <survey-radio-field
-                      id="energyCertificate"
-                      label="Si dispone già dell'Attestato di Prestazione Energetica (APE) dell'immobile?"
-                      rules="required"
-                      v-model="survey.hasEnergyPerformanceCertificate"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Building energetic class -->
-                    <survey-drop-down-field
-                      id="builiding-energetic-class"
-                      label="Qual è la classe energetica dell'immobile?"
-                      rules="required"
-                      v-model="survey.buildingEnergeticClass"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Energetic riqualification projecft -->
-                    <survey-radio-field
-                      id="energetic-riqualification-project"
-                      label="E' già stato prodotto il progetto di riqualificazione energetica?"
-                      rules="required"
-                      v-model="survey.hasEnergeticRiqualification"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Suppliers quotes -->
-                    <survey-radio-field
-                      id="suppliers-quotes"
-                      label="Sono già stati raccolti i preventivi dai fornitori?"
-                      rules="required"
-                      v-model="survey.hasSuppliersQuotes"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Intervention cost -->
-                    <survey-input-field
-                      id="intervention-cost"
-                      label="Fornire una stima del costo dell'intervento."
-                      :isRequired="false"
-                      type="text"
-                      v-model="survey.interventionCost"
-                      :vMoneyRule="{
-                        decimal: ',',
-                        thousands: '.',
-                        prefix: '€ ',
-                        precision: 0,
-                      }"
-                      vMaskRule="##########"
-                    />
-                  </b-col>
-                  <b-col sm="12">
-                    <!-- Works are already started -->
-                    <survey-radio-field
-                      id="works-already-started"
-                      label="Ha già avviato i lavori di riqualificazione energetica?"
-                      rules="required"
-                      v-model="survey.hasStartEnergeticRiqualification"
-                    />
-                  </b-col>
-                </b-row>
-              </b-container>
-              <b-container class="mt-3 mb-3 text-right">
-                <b-row>
-                  <b-col>
-                    <b-button class="d-none"></b-button>
-                    <b-button
-                      variant="outline-secondary"
-                      size="lg"
-                      class="mr-3"
-                      :disabled="isSaveInProgress"
-                      @click="onGoBackButtonClick(1)"
-                      >Indietro</b-button
+                </b-container>
+              </b-form>
+            </validation-observer>
+          </div>
+          <!-- Building data -->
+          <div v-if="currentStep.type == 2" key="building-data">
+            <validation-observer ref="observer">
+              <b-form @submit.stop.prevent="onNextButtonClick">
+                <b-container class="text-left mt-4">
+                  <b-row>
+                    <b-col sm="12">
+                      <!-- Recipient -->
+                      <survey-drop-down-field
+                        id="recipient"
+                        label="Il beneficiario del SUPERBONUS sarà"
+                        rules="required"
+                        v-model="survey.recipient"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Building type -->
+                      <survey-drop-down-field
+                        id="buildingType"
+                        label="Indichi la tipologia di edificio che sarà oggetto dell'intervento"
+                        rules="required"
+                        v-model="survey.interventionType"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Intervention type -->
+                      <survey-drop-down-field
+                        id="interventionType"
+                        label="Indichi la tipologia di intervento"
+                        rules="required"
+                        v-model="survey.buildingType"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Energy Performance Certificate -->
+                      <survey-radio-field
+                        id="energyCertificate"
+                        label="Si dispone già dell'Attestato di Prestazione Energetica (APE) dell'immobile?"
+                        rules="required"
+                        v-model="survey.hasEnergyPerformanceCertificate"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Building energetic class -->
+                      <survey-drop-down-field
+                        id="builiding-energetic-class"
+                        label="Qual è la classe energetica dell'immobile?"
+                        rules="required"
+                        v-model="survey.buildingEnergeticClass"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Energetic riqualification projecft -->
+                      <survey-radio-field
+                        id="energetic-riqualification-project"
+                        label="E' già stato prodotto il progetto di riqualificazione energetica?"
+                        rules="required"
+                        v-model="survey.hasEnergeticRiqualification"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Suppliers quotes -->
+                      <survey-radio-field
+                        id="suppliers-quotes"
+                        label="Sono già stati raccolti i preventivi dai fornitori?"
+                        rules="required"
+                        v-model="survey.hasSuppliersQuotes"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Intervention cost -->
+                      <survey-input-field
+                        id="intervention-cost"
+                        label="Fornire una stima del costo dell'intervento."
+                        :isRequired="false"
+                        type="text"
+                        v-model="survey.interventionCost"
+                        :vMoneyRule="{
+                          decimal: ',',
+                          thousands: '.',
+                          prefix: '€ ',
+                          precision: 0,
+                        }"
+                        vMaskRule="##########"
+                      />
+                    </b-col>
+                    <b-col sm="12">
+                      <!-- Works are already started -->
+                      <survey-radio-field
+                        id="works-already-started"
+                        label="Ha già avviato i lavori di riqualificazione energetica?"
+                        rules="required"
+                        v-model="survey.hasStartEnergeticRiqualification"
+                      />
+                    </b-col>
+                  </b-row>
+                </b-container>
+                <b-container class="mt-3 mb-3 text-right">
+                  <b-row>
+                    <b-col>
+                      <b-button class="d-none"></b-button>
+                      <b-button
+                        variant="outline-secondary"
+                        size="lg"
+                        class="mr-3"
+                        :disabled="isSaveInProgress"
+                        @click="onGoBackButtonClick(1)"
+                        >Indietro</b-button
+                      >
+                      <b-button
+                        variant="primary"
+                        type="submit"
+                        size="lg"
+                        :disabled="isSaveInProgress"
+                      >
+                        <b-spinner v-if="isSaveInProgress"></b-spinner>
+                        Conferma
+                      </b-button>
+                    </b-col>
+                  </b-row>
+                </b-container>
+              </b-form>
+            </validation-observer>
+          </div>
+          <!-- Confirm -->
+          <div v-if="currentStep.type == 3" key="confirm">
+            <validation-observer ref="observer">
+              <b-form @submit.stop.prevent="onNextButtonClick">
+                <b-container class="p-4 container__confirm">
+                  <b-row>
+                    <b-col>
+                      <b-icon
+                        icon="envelope"
+                        class="text-primary container__confirm-icon mb-4"
+                        font-scale="4"
+                      ></b-icon>
+                      <p class="container__confirm-text h5">
+                        Grazie per aver completato le informazioni, riceverai
+                        nelle prossime ore la guida direttamente al tuo
+                        indirizzo di posta.
+                      </p></b-col
                     >
-                    <b-button
-                      variant="primary"
-                      type="submit"
-                      size="lg"
-                      :disabled="isSaveInProgress"
-                    >
-                      <b-spinner v-if="isSaveInProgress"></b-spinner>
-                      Conferma
-                    </b-button>
-                  </b-col>
-                </b-row>
-              </b-container>
-            </b-form>
-          </validation-observer>
-        </div>
-        <div v-if="currentStep.type == 3">
-          <validation-observer ref="observer">
-            <b-form @submit.stop.prevent="onNextButtonClick">
-              <b-container class="p-4 container__confirm">
-                <b-row>
-                  <b-col>
-                    <b-icon
-                      icon="envelope"
-                      class="text-primary container__confirm-icon mb-4"
-                      font-scale="4"
-                    ></b-icon>
-                    <p class="container__confirm-text h5">
-                      Grazie per aver completato le informazioni, riceverai
-                      nelle prossime ore la guida direttamente al tuo indirizzo
-                      di posta.
-                    </p></b-col
-                  >
-                </b-row>
-                <b-row class="mt-4">
-                  <b-col>
-                    <b-button variant="primary" size="lg" type="submit">
-                      Nuovo sondaggio
-                    </b-button>
-                  </b-col>
-                </b-row>
-              </b-container>
-            </b-form>
-          </validation-observer>
-        </div>
+                  </b-row>
+                  <b-row class="mt-4">
+                    <b-col>
+                      <b-button variant="primary" size="lg" type="submit">
+                        Nuovo sondaggio
+                      </b-button>
+                    </b-col>
+                  </b-row>
+                </b-container>
+              </b-form>
+            </validation-observer>
+          </div>
+        </transition>
       </b-card>
     </b-container>
   </div>
@@ -362,10 +369,25 @@ export default class SurveySteps extends Vue {
 
   /** The active progress length  */
   private get progressLength() {
-    // if (this.currentStep === SurveyStepType.End)
-    //   return 100;
-    // else
     return ((this.currentStepIndex + 1) / this.steps.length) * 100 - 100 / this.steps.length / 2;
+  }
+
+  /** The enter animation */
+  private get enterAnimation() {
+    if (this.currentStep.type < this.previousStep.type) {
+      return "animate__animated animate__fadeInLeft animate__faster";
+    } else {
+      return "animate__animated animate__fadeInRight animate__faster";
+    }
+  }
+
+  /** The leave animation */
+  private get leaveAnimation() {
+    if (this.currentStep.type > this.previousStep.type) {
+      return "animate__animated animate__fadeOutLeft animate__faster";
+    } else {
+      return "animate__animated animate__fadeOutRight animate__faster";
+    }
   }
 
   created() {
@@ -391,8 +413,7 @@ export default class SurveySteps extends Vue {
    * Fires on previous button click
    */
   private async onGoBackButtonClick() {
-    if (await this.validate())
-      this.changeActiveStep(this.steps[this.currentStepIndex - 1]);
+    this.changeActiveStep(this.steps[this.currentStepIndex - 1]);
   }
 
   /**
@@ -429,11 +450,14 @@ export default class SurveySteps extends Vue {
    * Scroll the cursor to the top (for mobile)
    */
   private scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    if (window.scrollY > 0)
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+      }, 500);
   }
 
   private sleep = (m: any) => new Promise(r => setTimeout(r, m))

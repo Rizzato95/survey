@@ -8,10 +8,11 @@ import store from './store'
 
 import './assets/style/_main.scss'
 
+import 'animate.css';
+
 // Import vee-validate italian language
 import { ValidationObserver, ValidationProvider, localize } from 'vee-validate';
 import it from 'vee-validate/dist/locale/it.json';
-
 localize('it', it);
 
 // Install VeeValidate components globally

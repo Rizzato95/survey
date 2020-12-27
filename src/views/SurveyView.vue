@@ -1,70 +1,72 @@
 <template>
   <div>
     <div v-if="!isSurveyVisible" class="survey__start">
-      <b-container>
-        <b-card class="text-center survey__start-card">
-          <b-container class="survey__start-logos">
-            <b-row>
-              <b-col align-self="center">
-                <b-img
-                  src="../assets/logo-revaluta.png"
-                  class="logo-img mr-3"
-                />
-                <b-img src="../assets/logo-unicredit.png" class="logo-img" />
-              </b-col>
-            </b-row>
-          </b-container>
-          <b-container class="survey__intro">
-            <b-row>
-              <b-col>
-                <h1 class="survey__intro-title">
-                  <span>Green110</span>
-                  <span>Superbonus Revaluta</span>
-                </h1>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-checkbox
-                  id="checkbox"
-                  v-model="areTermsAccepted"
-                  name="checkbox-1"
-                >
-                  Per poter proseguire confermare la presa visione
-                  dell'informativa sul trattamento dei dati.
-                </b-form-checkbox>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-link
-                  href="https://www.warranthub.it/privacy/"
-                  target="__blank"
-                  >Mostrare i termini</b-link
-                >
-              </b-col>
-            </b-row>
-            <b-row class="mt-4 align-bottom">
-              <b-col>
-                <span id="confirm-step-1">
-                  <b-button
-                    variant="primary"
-                    class="survey__button"
-                    size="lg"
-                    :disabled="!areTermsAccepted"
-                    @click="startSurvey"
-                    >Inizia</b-button
+      <transition appear name="fade">
+        <b-container>
+          <b-card class="text-center survey__start-card">
+            <b-container class="survey__start-logos">
+              <b-row>
+                <b-col align-self="center">
+                  <b-img
+                    src="../assets/logo-revaluta.png"
+                    class="logo-img mr-3"
+                  />
+                  <b-img src="../assets/logo-unicredit.png" class="logo-img" />
+                </b-col>
+              </b-row>
+            </b-container>
+            <b-container class="survey__intro">
+              <b-row>
+                <b-col>
+                  <h1 class="survey__intro-title">
+                    <span>Green110</span>
+                    <span>Superbonus Revaluta</span>
+                  </h1>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-form-checkbox
+                    id="checkbox"
+                    v-model="areTermsAccepted"
+                    name="checkbox-1"
                   >
-                </span>
-                <b-tooltip v-if="!areTermsAccepted" target="confirm-step-1">
-                  Per proseguire è necessario confermare la presa visione
-                  dell'informativa sul trattamento dei dati.
-                </b-tooltip>
-              </b-col>
-            </b-row>
-          </b-container>
-        </b-card>
-      </b-container>
+                    Per poter proseguire confermare la presa visione
+                    dell'informativa sul trattamento dei dati.
+                  </b-form-checkbox>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-link
+                    href="https://www.warranthub.it/privacy/"
+                    target="__blank"
+                    >Mostrare i termini</b-link
+                  >
+                </b-col>
+              </b-row>
+              <b-row class="mt-4 align-bottom">
+                <b-col>
+                  <span id="confirm-step-1">
+                    <b-button
+                      variant="primary"
+                      class="survey__button"
+                      size="lg"
+                      :disabled="!areTermsAccepted"
+                      @click="startSurvey"
+                      >Inizia</b-button
+                    >
+                  </span>
+                  <b-tooltip v-if="!areTermsAccepted" target="confirm-step-1">
+                    Per proseguire è necessario confermare la presa visione
+                    dell'informativa sul trattamento dei dati.
+                  </b-tooltip>
+                </b-col>
+              </b-row>
+            </b-container>
+          </b-card>
+        </b-container>
+      </transition>
     </div>
     <div v-else>
       <b-container class="text-center survey__logos mt-4">
@@ -75,7 +77,9 @@
           </b-col>
         </b-row>
       </b-container>
-      <SurveySteps />
+      <transition appear name="fade">
+        <SurveySteps />
+      </transition>
     </div>
   </div>
 </template>
@@ -181,5 +185,13 @@ export default class SurveyView extends Vue {
       color: $primary;
     }
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
