@@ -251,32 +251,33 @@
           </validation-observer>
         </div>
         <div v-if="currentStep.type == 3">
-          <b-container class="p-4 container__confirm">
-            <b-row>
-              <b-col>
-                <b-icon
-                  icon="envelope"
-                  class="text-primary container__confirm-icon mb-4"
-                  font-scale="4"
-                ></b-icon>
-                <p class="container__confirm-text h5">
-                  Grazie per aver completato le informazioni, riceverai nelle
-                  prossime ore la guida direttamente al tuo indirizzo di posta.
-                </p></b-col
-              >
-            </b-row>
-            <b-row class="mt-4">
-              <b-col>
-                <b-button
-                  variant="primary"
-                  size="lg"
-                  @click="onNextButtonClick"
-                >
-                  Nuovo sondaggio
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-container>
+          <validation-observer ref="observer">
+            <b-form @submit.stop.prevent="onNextButtonClick">
+              <b-container class="p-4 container__confirm">
+                <b-row>
+                  <b-col>
+                    <b-icon
+                      icon="envelope"
+                      class="text-primary container__confirm-icon mb-4"
+                      font-scale="4"
+                    ></b-icon>
+                    <p class="container__confirm-text h5">
+                      Grazie per aver completato le informazioni, riceverai
+                      nelle prossime ore la guida direttamente al tuo indirizzo
+                      di posta.
+                    </p></b-col
+                  >
+                </b-row>
+                <b-row class="mt-4">
+                  <b-col>
+                    <b-button variant="primary" size="lg" type="submit">
+                      Nuovo sondaggio
+                    </b-button>
+                  </b-col>
+                </b-row>
+              </b-container>
+            </b-form>
+          </validation-observer>
         </div>
       </b-card>
     </b-container>
@@ -368,6 +369,7 @@ export default class SurveySteps extends Vue {
   }
 
   created() {
+    // TODO: Demo data, remove them
     this.survey.name = 'Marco';
     this.survey.surname = 'Rizzato';
     this.survey.buildingEnergeticClass = 'b';
@@ -456,8 +458,17 @@ export default class SurveySteps extends Vue {
 
     if (!isValid) {
       // Set the  fo
-      const textbox: any = document.getElementsByClassName('is-invalid')[0];
-      textbox?.focus();
+      let element: any = document.getElementsByClassName('form-control is-invalid')[0];
+
+      if (!element)
+        element = document.getElementsByClassName('custom-select is-invalid')[0];
+
+      if (element)
+        element.focus();
+      else {
+        element = document.getElementsByClassName('is-invalid')[0];
+        element.scrollIntoView();
+      }
     }
     return isValid;
   }
