@@ -11,16 +11,12 @@ export class BaseService {
    * Creates a new BaseService
    * @param baseUrl The base url for this serivce. If a valid value is not passed, the settings 'DefaultServicseBaseUrl' will be used
    */
-  constructor(baseUrl: string) {
+  constructor(baseUrl?: string) {
 
-    // Set base url
-    let url: string = baseUrl;
-
-    if (!url) {
-      url = '';
-      console.warn('[BaseService] a base url cannot be resolved. The base url is not empty string.');
-    }
-    this.baseUrl = url;
+    if (baseUrl)
+      this.baseUrl = baseUrl;
+    else
+      this.baseUrl = process.env.VUE_APP_SERVICE_BASE_URL;
 
     // Initialize httpclient
     this.initializeHttpClient();
@@ -31,7 +27,7 @@ export class BaseService {
    * @param url The url to fetch (in addiction to the baseUrl)
    * @param logException A boolean indicating if this call should log any eventual exception to the server. Default true
    */
-  protected fetchGet<T>(url: string, logException: boolean = true): Promise<T> {
+  protected fetchGet<T>(url: string, logException = true): Promise<T> {
     return this.fetch<T>(url, 'get', null, logException);
   }
 
@@ -40,7 +36,7 @@ export class BaseService {
    * @param url The url to fetch (in addiction to the baseUrl)
    * @param logException A boolean indicating if this call should log any eventual exception to the server. Default true
    */
-  protected fetchPost<T>(url: string, data?: any, logException: boolean = true): Promise<T> {
+  protected fetchPost<T>(url: string, data?: any, logException = true): Promise<T> {
     return this.fetch<T>(url, 'post', data, logException);
   }
 
@@ -49,7 +45,7 @@ export class BaseService {
    * @param url The url to fetch (in addiction to the baseUrl)
    * @param logException A boolean indicating if this call should log any eventual exception to the server. Default true
    */
-  protected fetchPut<T>(url: string, data?: any, logException: boolean = true): Promise<T> {
+  protected fetchPut<T>(url: string, data?: any, logException = true): Promise<T> {
     return this.fetch<T>(url, 'put', data, logException);
   }
 
@@ -58,7 +54,7 @@ export class BaseService {
    * @param url The url to fetch (in addiction to the baseUrl)
    * @param logException A boolean indicating if this call should log any eventual exception to the server. Default true
    */
-  protected fetchDelete<T>(url: string, logException: boolean = true): Promise<T> {
+  protected fetchDelete<T>(url: string, logException = true): Promise<T> {
     return this.fetch<T>(url, 'delete', null, logException);
   }
 
@@ -68,7 +64,7 @@ export class BaseService {
    * @param method The verb to use in the request (eg. post, delete, ...)
    * @param data The data of the body request
    */
-  protected fetchWithoutBaseUrl<T>(url: string, method: string = 'GET', data?: any): Promise<T> {
+  protected fetchWithoutBaseUrl<T>(url: string, method = 'GET', data?: any): Promise<T> {
     if (this.httpClient)
       return this.httpClient({
         method,
@@ -88,7 +84,7 @@ export class BaseService {
    * @param data The data of the body request
    * @param logException A boolean indicating if this call should log any eventual exception to the server. Default true
    */
-  private fetch<T>(url: string, method: string = 'GET', data?: any, logException: boolean = true): Promise<T> {
+  private fetch<T>(url: string, method = 'GET', data?: any, logException = true): Promise<T> {
     this.initializeHttpClient();
 
     if (this.httpClient) {

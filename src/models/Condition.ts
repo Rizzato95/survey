@@ -1,4 +1,4 @@
-import { OperatorType } from './OperatorType';
+import { OperatorType } from './enums/OperatorType';
 
 /**
  * Rappresents a filter single condition.

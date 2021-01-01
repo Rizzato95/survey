@@ -1,4 +1,4 @@
-import { Survey } from '@/models/Survey';
+import { Settings } from '@/models/Settings';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -6,8 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    survey: new Survey(),
-
+    settings: new Settings(process.env.VUE_APP_SERVICE_BASE_URL)
   },
   mutations: {
   },

@@ -17,7 +17,7 @@ export class CrudBaseService extends AutoQueryService {
     /**
      * Initialize the service with the settings 'Msa.Core.MenuItemsServiceBaseUrl' or 'Msa.Core.CoreServicesBaseUrl'
      */
-    constructor(entityName: string, baseUrl: string) {
+    constructor(entityName: string, baseUrl?: string) {
         super(baseUrl);
         this.entityName = entityName;
     }
@@ -82,9 +82,9 @@ export class CrudBaseService extends AutoQueryService {
             return Promise.reject('Missing filter');
 
         // Create Request
-        let request: QueryRequest = new QueryRequest(filter);
+        const request: QueryRequest = new QueryRequest(filter);
         // Execute request
-        let response: AutoQueryResponse<T> = await this.query(request);
+        const response: AutoQueryResponse<T> = await this.query(request);
 
         return response ? response.results : [];
     }

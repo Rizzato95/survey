@@ -1,4 +1,4 @@
-import { SurveyStepType } from './SurveyStepType';
+import { SurveyStepType } from './enums/SurveyStepType';
 
 export class SurveyStep {
     /** The title */

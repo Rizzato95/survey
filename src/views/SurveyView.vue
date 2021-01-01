@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Survey intro -->
     <div v-if="!isSurveyVisible" class="survey__start">
       <transition appear name="fade">
         <b-container>
@@ -68,6 +69,7 @@
         </b-container>
       </transition>
     </div>
+    <!-- Survey Steps -->
     <div v-else>
       <b-container class="text-center survey__logos mt-4">
         <b-row>
@@ -85,16 +87,19 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+/** Import vue property decorator */
+import { Vue, Component } from 'vue-property-decorator';
 
 /** Import models */
-import { Survey } from '../models/Survey';
-import { SurveyStepType } from '../models/SurveyStepType';
+import { Defaults } from '@/models/Defaults';
+import { Questionnaire } from '@/models/Questionnaire';
 
-import SurveySteps from '../components/SurveySteps.vue';
-
-/** Import v-money utils */
+/** Import helpers */
+import { CacheHelper } from '@/helpers/CacheHelper';
 import { unformat } from '../helpers/utils';
+
+/** Import components */
+import SurveySteps from '../components/SurveySteps.vue';
 
 @Component({
   components: {
@@ -102,13 +107,24 @@ import { unformat } from '../helpers/utils';
   }
 })
 export default class SurveyView extends Vue {
-  /** The survey object*/
-  private localSurvey: Survey = new Survey();
   /** Indicates if the terms are accepted or not */
   private areTermsAccepted = false;
   /** Indicates if the terms are accepted or not */
   private isSurveyVisible = false;
 
+  /**
+   * Vue lifecycle event
+   */
+  private created() {
+    const survey = CacheHelper.getItem<Questionnaire>(Defaults.surveyLocalStorageName);
+
+    if (survey)
+      this.startSurvey();
+  }
+
+  /**
+   * Start a new survey
+   */
   private startSurvey() {
     this.isSurveyVisible = true;
   }

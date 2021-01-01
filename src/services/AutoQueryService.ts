@@ -2,7 +2,7 @@
 import { AutoQueryResponse } from '../models/AutoQueryResponse'
 import { Condition } from '../models/Condition'
 import { IQuery } from '../models/IQuery'
-import { OperatorType } from '../models/OperatorType'
+import { OperatorType } from '../models/enums/OperatorType'
 import { Sort } from '../models/Sort'
 import { SortOptions } from '../models/SortOptions'
 
@@ -18,7 +18,7 @@ export class AutoQueryService extends BaseService {
    * This instance baseUrl
    * @param baseUrl The baseUrl
    */
-  constructor(baseUrl: string) {
+  constructor(baseUrl?: string) {
     super(baseUrl);
 
     /** Map the operators according to http://docs.servicestack.net/autoquery-rdbms */
@@ -40,7 +40,7 @@ export class AutoQueryService extends BaseService {
    * @param append The optional append options (eg. aggregates functions, ecc)
    */
   protected translate(entity: IQuery | null, append?: string): string {
-    let myQuery: string = '';
+    let myQuery = '';
     if (entity) {
       // Get the selected properties
       if (entity.properties && entity.properties.length > 0) {

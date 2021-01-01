@@ -2,6 +2,7 @@
   <div>
     <b-container class="">
       <b-card class="text-center steps__card overflow-hidden">
+        <!-- Stepper -->
         <div class="stepper m-4">
           <div class="stepper__progress"></div>
           <div
@@ -58,7 +59,7 @@
                         label="Nome"
                         rules="required"
                         type="text"
-                        v-model="survey.name"
+                        v-model="survey.firstName"
                       />
                     </b-col>
                     <!-- Surname -->
@@ -68,10 +69,10 @@
                         label="Cognome"
                         rules="required"
                         type="text"
-                        v-model="survey.surname"
+                        v-model="survey.lastName"
                       />
-                      <!-- Fiscal code -->
                     </b-col>
+                    <!-- Fiscal code -->
                     <b-col sm="12">
                       <survey-input-field
                         id="fiscal-code"
@@ -85,8 +86,8 @@
                         }"
                         vMaskRule="XXXXXXXXXXXXXXXX"
                       />
-                      <!-- Email -->
                     </b-col>
+                    <!-- Email -->
                     <b-col sm="12">
                       <survey-input-field
                         id="email"
@@ -95,8 +96,8 @@
                         type="email"
                         v-model="survey.email"
                       />
-                      <!-- Phone -->
                     </b-col>
+                    <!-- Phone -->
                     <b-col sm="12">
                       <survey-input-field
                         id="phone"
@@ -107,18 +108,18 @@
                         vMaskRule="############"
                       />
                     </b-col>
+                    <!-- Role -->
                     <b-col sm="12">
                       <survey-drop-down-field
                         id="role"
                         label="Qualifica"
                         rules="required"
                         otherOptionValue="c"
-                        v-model="survey.role"
+                        v-model="survey.asA"
                       />
                     </b-col>
                   </b-row>
                 </b-container>
-
                 <b-container class="mt-3 mb-3 text-right">
                   <div class="row">
                     <div class="col">
@@ -137,35 +138,35 @@
               <b-form @submit.stop.prevent="onNextButtonClick">
                 <b-container class="text-left mt-4">
                   <b-row>
+                    <!-- Beneficiary -->
                     <b-col sm="12">
-                      <!-- Recipient -->
                       <survey-drop-down-field
                         id="recipient"
                         label="Il beneficiario del SUPERBONUS sarà"
                         rules="required"
-                        v-model="survey.recipient"
+                        v-model="survey.beneficiary"
                       />
                     </b-col>
+                    <!-- Building type -->
                     <b-col sm="12">
-                      <!-- Building type -->
                       <survey-drop-down-field
                         id="buildingType"
                         label="Indichi la tipologia di edificio che sarà oggetto dell'intervento"
                         rules="required"
-                        v-model="survey.interventionType"
+                        v-model="survey.buildingType"
                       />
                     </b-col>
+                    <!-- Intervention type -->
                     <b-col sm="12">
-                      <!-- Intervention type -->
                       <survey-drop-down-field
                         id="interventionType"
                         label="Indichi la tipologia di intervento"
                         rules="required"
-                        v-model="survey.buildingType"
+                        v-model="survey.maintenanceWorkKind"
                       />
                     </b-col>
+                    <!-- Energy Performance Certificate -->
                     <b-col sm="12">
-                      <!-- Energy Performance Certificate -->
                       <survey-radio-field
                         id="energyCertificate"
                         label="Si dispone già dell'Attestato di Prestazione Energetica (APE) dell'immobile?"
@@ -173,41 +174,41 @@
                         v-model="survey.hasEnergyPerformanceCertificate"
                       />
                     </b-col>
+                    <!-- Building energetic class -->
                     <b-col sm="12">
-                      <!-- Building energetic class -->
                       <survey-drop-down-field
                         id="builiding-energetic-class"
                         label="Qual è la classe energetica dell'immobile?"
                         rules="required"
-                        v-model="survey.buildingEnergeticClass"
+                        v-model="survey.energyClass"
                       />
                     </b-col>
+                    <!-- Energetic riqualification projecft -->
                     <b-col sm="12">
-                      <!-- Energetic riqualification projecft -->
                       <survey-radio-field
                         id="energetic-riqualification-project"
                         label="E' già stato prodotto il progetto di riqualificazione energetica?"
                         rules="required"
-                        v-model="survey.hasEnergeticRiqualification"
+                        v-model="survey.hasEnergyRedevelopmentProject"
                       />
                     </b-col>
+                    <!-- Suppliers quotes -->
                     <b-col sm="12">
-                      <!-- Suppliers quotes -->
                       <survey-radio-field
                         id="suppliers-quotes"
                         label="Sono già stati raccolti i preventivi dai fornitori?"
                         rules="required"
-                        v-model="survey.hasSuppliersQuotes"
+                        v-model="survey.hasSupplierQuotes"
                       />
                     </b-col>
+                    <!-- Intervention cost -->
                     <b-col sm="12">
-                      <!-- Intervention cost -->
                       <survey-input-field
                         id="intervention-cost"
                         label="Fornire una stima del costo dell'intervento."
                         :isRequired="false"
                         type="text"
-                        v-model="survey.interventionCost"
+                        v-model="survey.estimatedCost"
                         :vMoneyRule="{
                           decimal: ',',
                           thousands: '.',
@@ -217,13 +218,13 @@
                         vMaskRule="##########"
                       />
                     </b-col>
+                    <!-- Works are already started -->
                     <b-col sm="12">
-                      <!-- Works are already started -->
                       <survey-radio-field
                         id="works-already-started"
                         label="Ha già avviato i lavori di riqualificazione energetica?"
                         rules="required"
-                        v-model="survey.hasStartEnergeticRiqualification"
+                        v-model="survey.isWorkStarted"
                       />
                     </b-col>
                   </b-row>
@@ -292,12 +293,19 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 
 /** Import models */
-import { Survey } from '../models/Survey';
+import { Defaults } from '@/models/Defaults';
+import { Questionnaire } from '../models/Questionnaire';
 import { SurveyStep } from '../models/SurveyStep';
-import { SurveyStepType } from '../models/SurveyStepType';
+import { SurveyStepType } from '../models/enums/SurveyStepType';
+
+/** Import helpers */
+import { CacheHelper } from '../helpers/CacheHelper';
+
+/** Import services */
+import { QuestionnaireService } from '../services/QuestionnaireService';
 
 /** Import components */
 import SurveyDropDownField from '../components/SurveyDropDownField.vue';
@@ -310,6 +318,9 @@ import { unformat } from '../helpers/utils';
 /** Import vee-validate rules */
 import { extend } from 'vee-validate';
 import { required, email, regex, min } from 'vee-validate/dist/rules';
+import { EnergyClassType } from '@/models/enums/EnergyClassType';
+import { BuildingType } from '@/models/enums/BuildingType';
+import { WorkflowStatusType } from '@/models/enums/WorkflowStatusType';
 
 extend('required', required);
 extend('email', email);
@@ -325,8 +336,8 @@ extend('min', min);
   }
 })
 export default class SurveySteps extends Vue {
-  /** The survey object */
-  private survey: Survey = new Survey();
+  /** The questionnaire object */
+  private survey: Questionnaire = new Questionnaire();
   /** Indicates if the terms are accepted or not */
   private areTermsAccepted = false;
   /** The list of steps */
@@ -390,23 +401,22 @@ export default class SurveySteps extends Vue {
     }
   }
 
-  created() {
-    // TODO: Demo data, remove them
-    this.survey.name = 'Marco';
-    this.survey.surname = 'Rizzato';
-    this.survey.buildingEnergeticClass = 'b';
-    this.survey.hasEnergeticRiqualification = true;
-    this.survey.hasSuppliersQuotes = true;
-    this.survey.interventionCost = 1000;
-    this.survey.hasStartEnergeticRiqualification = false;
-    this.survey.fiscalCode = 'RZZMRC95T29L407W';
-    this.survey.email = 'r.m@gmail.com';
-    this.survey.phone = '3484110899';
-    this.survey.role = 'b';
-    this.survey.recipient = 'b';
-    this.survey.buildingType = 'b';
-    this.survey.interventionType = 'b';
-    this.survey.hasEnergyPerformanceCertificate = true;
+  /**
+   * Vue lifecycle event
+   */
+  private created() {
+    // Check if exists a survey in cache
+    this.survey = CacheHelper.getItem<Questionnaire | null>(Defaults.surveyLocalStorageName) || new Questionnaire();
+    // Check if exists a "steps" in cache 
+    const steps = CacheHelper.getItem<SurveyStep[]>(Defaults.surveyStepsLocalStorageName);
+    if (steps) {
+      this.steps = steps;
+      const activeStep = this.steps.find((x: SurveyStep) => x.isActive);
+      if (activeStep)
+        this.changeActiveStep(activeStep);
+      else
+        this.changeActiveStep(this.steps[0]);
+    }
   }
 
   /**
@@ -436,6 +446,10 @@ export default class SurveySteps extends Vue {
 
             this.changeActiveStep(this.steps[this.currentStepIndex + 1]);
             this.currentStep.isFilled = true;
+
+            // Remove cache variables
+            CacheHelper.removeItem(Defaults.surveyLocalStorageName);
+            CacheHelper.removeItem(Defaults.surveyStepsLocalStorageName);
           }
           break;
         }
@@ -467,6 +481,11 @@ export default class SurveySteps extends Vue {
    */
   private async saveSurvey(): Promise<boolean> {
     this.isSaveInProgress = true;
+    this.survey.workflowStatus = WorkflowStatusType.Submitted;
+
+    const questionnaireService = new QuestionnaireService();
+    questionnaireService.create(this.survey);
+
     await this.sleep(3000)
     this.isSaveInProgress = false;
 
@@ -497,6 +516,9 @@ export default class SurveySteps extends Vue {
     return isValid;
   }
 
+  /**
+   * Go to a specific step
+   */
   private async goToStep(step: SurveyStep) {
     if (!this.isSurveyComplete && step.type < this.currentStep.type || await this.validate()) {
 
@@ -505,6 +527,9 @@ export default class SurveySteps extends Vue {
     }
   }
 
+  /**
+   * Change the active step
+   */
   private changeActiveStep(newStep: SurveyStep) {
     this.currentStep.isActive = false;
     this.previousStep = JSON.parse(JSON.stringify(this.currentStep));
@@ -512,11 +537,16 @@ export default class SurveySteps extends Vue {
     this.currentStep = newStep;
     this.currentStep.isActive = true;
 
+    CacheHelper.setItem(Defaults.surveyStepsLocalStorageName, this.steps);
+
     this.scrollToTop();
   }
 
+  /**
+   * Reset the survey with initial data
+   */
   private initializeSurvey() {
-    this.survey = new Survey();
+    this.survey = new Questionnaire();
     this.isSurveyComplete = false;
 
     this.steps.forEach((step: SurveyStep) => {
@@ -528,6 +558,11 @@ export default class SurveySteps extends Vue {
     this.previousStep = this.steps[0];
 
     this.currentStep.isActive = true;
+  }
+
+  /** Listen to survey property change for update cache variable */
+  @Watch('survey', { deep: true }) onSurveyChanged(value: Questionnaire) {
+    CacheHelper.setItem(Defaults.surveyLocalStorageName, value);
   }
 }
 </script>

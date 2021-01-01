@@ -13,6 +13,7 @@
         v-model="internalValue"
         :options="options"
         :state="getValidationState(validationContext)"
+        @change="onChange"
         stacked
       >
         <b-form-invalid-feedback
