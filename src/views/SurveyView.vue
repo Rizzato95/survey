@@ -71,14 +71,6 @@
     </div>
     <!-- Survey Steps -->
     <div v-else>
-      <b-container class="text-center survey__logos mt-4">
-        <b-row>
-          <b-col align-self="center">
-            <b-img src="../assets/logo-revaluta.png" class="logo-img mr-3" />
-            <b-img src="../assets/logo-unicredit.png" class="logo-img" />
-          </b-col>
-        </b-row>
-      </b-container>
       <transition appear name="fade">
         <SurveySteps />
       </transition>
@@ -135,10 +127,6 @@ export default class SurveyView extends Vue {
 @import "../assets/style/main.scss";
 
 .survey__start {
-  background-image: linear-gradient(to right bottom, $primary, $secondary);
-  height: 100vh;
-  width: 100%;
-
   &-card {
     position: absolute;
     top: 50%;
@@ -162,10 +150,6 @@ export default class SurveyView extends Vue {
       width: 100%;
     }
   }
-}
-
-.logo-img {
-  height: 40px;
 }
 
 .survey__button {

@@ -18,7 +18,6 @@ export class Settings {
      * @param serviceBaseUrl The settings base url
      */
     constructor(serviceBaseUrl: string) {
-        console.log(serviceBaseUrl);
         this.serviceBaseUrl = serviceBaseUrl;
     }
 

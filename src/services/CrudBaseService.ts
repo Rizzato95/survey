@@ -77,15 +77,13 @@ export class CrudBaseService extends AutoQueryService {
      * @param filter The filter for the query
      * @returns The array of results
      */
-    public async queryFromFilter<T>(filter: Filter): Promise<T[]> {
+    public async queryFromFilter<T>(filter: Filter, skip?: number, take?: number): Promise<AutoQueryResponse<T>> {
         if (!filter)
             return Promise.reject('Missing filter');
 
         // Create Request
-        const request: QueryRequest = new QueryRequest(filter);
+        const request: QueryRequest = new QueryRequest(filter, undefined, skip, take);
         // Execute request
-        const response: AutoQueryResponse<T> = await this.query(request);
-
-        return response ? response.results : [];
+        return await this.query(request);
     }
 }

@@ -25,10 +25,10 @@ export class QueryRequest implements IQuery {
     this.filter = filter;
     this.properties = properties ? properties : [];
 
-    if (this.skip)
+    if (skip)
       this.skip = skip;
 
-    if (this.take)
+    if (take)
       this.take = take;
   }
 }

@@ -1,7 +1,12 @@
 <template>
   <div>
-    <b-container class="">
+    <b-container class="steps__container">
       <b-card class="text-center steps__card overflow-hidden">
+        <b-row class="mb-4">
+          <b-col align-self="center">
+            <b-img src="../assets/logo-unicredit.png" class="logo-img" />
+          </b-col>
+        </b-row>
         <!-- Stepper -->
         <div class="stepper m-4">
           <div class="stepper__progress"></div>
@@ -114,7 +119,9 @@
                         id="role"
                         label="Qualifica"
                         rules="required"
-                        otherOptionValue="c"
+                        entityName="Msa.Core.Models.Enums.MetadataCategoryType"
+                        :otherValue.sync="survey.otherAsA"
+                        :otherOptionValue="4"
                         v-model="survey.asA"
                       />
                     </b-col>
@@ -122,6 +129,12 @@
                 </b-container>
                 <b-container class="mt-3 mb-3 text-right">
                   <div class="row">
+                    <b-col class="text-left d-none d-sm-block">
+                      <b-img
+                        src="../assets/logo-revaluta.png"
+                        class="logo-img mr-3"
+                      />
+                    </b-col>
                     <div class="col">
                       <b-button variant="primary" type="submit" size="lg"
                         >Avanti
@@ -145,6 +158,9 @@
                         label="Il beneficiario del SUPERBONUS sarà"
                         rules="required"
                         v-model="survey.beneficiary"
+                        entityName="Msa.Core.Models.Enums.MetadataCategoryType"
+                        :otherValue.sync="survey.otherBeneficiary"
+                        :otherOptionValue="4"
                       />
                     </b-col>
                     <!-- Building type -->
@@ -154,6 +170,7 @@
                         label="Indichi la tipologia di edificio che sarà oggetto dell'intervento"
                         rules="required"
                         v-model="survey.buildingType"
+                        entityName="Msa.Core.Models.Enums.MetadataCategoryType"
                       />
                     </b-col>
                     <!-- Intervention type -->
@@ -163,6 +180,9 @@
                         label="Indichi la tipologia di intervento"
                         rules="required"
                         v-model="survey.maintenanceWorkKind"
+                        entityName="Msa.Core.Models.Enums.MetadataCategoryType"
+                        :otherValue.sync="survey.otherMaintenanceWorkKind"
+                        :otherOptionValue="4"
                       />
                     </b-col>
                     <!-- Energy Performance Certificate -->
@@ -181,6 +201,7 @@
                         label="Qual è la classe energetica dell'immobile?"
                         rules="required"
                         v-model="survey.energyClass"
+                        entityName="Msa.Core.Models.Enums.MetadataCategoryType"
                       />
                     </b-col>
                     <!-- Energetic riqualification projecft -->
@@ -231,6 +252,12 @@
                 </b-container>
                 <b-container class="mt-3 mb-3 text-right">
                   <b-row>
+                    <b-col class="text-left d-none d-sm-block">
+                      <b-img
+                        src="../assets/logo-revaluta.png"
+                        class="logo-img mr-3"
+                      />
+                    </b-col>
                     <b-col>
                       <b-button class="d-none"></b-button>
                       <b-button
@@ -264,14 +291,18 @@
                   <b-row>
                     <b-col>
                       <b-icon
-                        icon="envelope"
-                        class="text-primary container__confirm-icon mb-4"
+                        icon="check2-circle"
+                        class="text-success container__confirm-icon mb-4"
                         font-scale="4"
                       ></b-icon>
                       <p class="container__confirm-text h5">
-                        Grazie per aver completato le informazioni, riceverai
-                        nelle prossime ore la guida direttamente al tuo
-                        indirizzo di posta.
+                        <span>
+                          Grazie per aver completato le informazioni.
+                        </span>
+                        <br />
+                        <span>
+                          Sarai contattato a breve da un nostro esperto.
+                        </span>
                       </p></b-col
                     >
                   </b-row>
@@ -280,6 +311,16 @@
                       <b-button variant="primary" size="lg" type="submit">
                         Nuovo sondaggio
                       </b-button>
+                    </b-col>
+                  </b-row>
+                </b-container>
+                <b-container class="p-3">
+                  <b-row>
+                    <b-col class="text-left">
+                      <b-img
+                        src="../assets/logo-revaluta.png"
+                        class="logo-img mr-3"
+                      />
                     </b-col>
                   </b-row>
                 </b-container>
@@ -577,6 +618,7 @@ export default class SurveySteps extends Vue {
 .steps__card {
   margin-top: 1.5rem !important;
   margin-bottom: 1.5rem !important;
+  opacity: 0.9;
 }
 
 .stepper {
@@ -640,16 +682,15 @@ export default class SurveySteps extends Vue {
 }
 
 .container__confirm {
-  padding: 5rem 6rem !important;
+  padding: 3rem 6rem !important;
 
   &-icon {
-    font-size: 600% !important;
+    font-size: 800% !important;
   }
 }
 
 .card {
   border: none;
-  box-shadow: 0px 0px 20px 1px #d4d0d0;
 }
 
 .container {
@@ -668,8 +709,15 @@ export default class SurveySteps extends Vue {
 }
 
 @media only screen and (max-width: map-get($map: $container-max-widths, $key: sm )) {
+  .steps__container {
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
   .steps__card {
-    margin-bottom: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    min-height: 100vh !important;
   }
 
   .card {
@@ -679,6 +727,7 @@ export default class SurveySteps extends Vue {
 
   .card-body {
     padding: 0;
+    margin-top: 1.5rem !important;
   }
 
   .container {
@@ -691,7 +740,7 @@ export default class SurveySteps extends Vue {
   }
 
   .container__confirm {
-    padding: 5rem 0rem !important;
+    padding: 3rem 0rem !important;
   }
 }
 </style>

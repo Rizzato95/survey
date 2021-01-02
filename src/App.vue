@@ -30,3 +30,27 @@ export default class App extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import "./assets/style/main.scss";
+
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/hero.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-attachment: fixed;
+}
+
+.logo-img {
+  height: 40px;
+}
+
+@media only screen and (max-width: map-get($map: $container-max-widths, $key: sm )) {
+  .logo-img {
+    height: 30px;
+  }
+}
+</style>
